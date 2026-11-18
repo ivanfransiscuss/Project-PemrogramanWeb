@@ -31,7 +31,7 @@ DB_PASSWORD=
 | :--- | :--- | :--- |
 | Ivan Fransiscus | 2510514014 | Inisialisasi kerangka proyek, tata letak utama, pengelolaan repositori dan pull Request, serta modul Direktori Dosen dan Pengajuan Dospem |
 | Arkan | 2510514017 | Modul login, Pengisian Biodata Awal, Edit Profil Pengguna, dan FAQ |
-| Tina | 2510514015 | Modul PKM Match (Pencarian dan Pembentukan Kelompok) serta To-Do List PKM |
+| Tinna | 2510514015 | Modul PKM Match (Pencarian dan Pembentukan Kelompok) serta To-Do List PKM |
 | Nindira | 2510514006 | Modul Manajemen Jadwal Kosong Dosen dan Pemesanan (*Booking*) Bimbingan |
 | Bram | 2510514008 | Modul Dashboard Utama, Repositori Proposal, dan Catatan Bimbingan (*Logbook*) |
 
