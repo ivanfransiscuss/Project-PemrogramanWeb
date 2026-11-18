@@ -8,3 +8,5 @@ Route::get('/', function () {
 });
 
 Route::get('/uji-coba', [UjiCobaController::class, 'index'])->name('uji-coba.index');
+
+Route::get('/uji-a', fn () => 'halaman A');
