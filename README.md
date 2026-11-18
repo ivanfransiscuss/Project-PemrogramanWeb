@@ -1,3 +1,41 @@
+#PKM Center
+
+Project Akhir Mata Kuliah Pemrograman Web — S1 Sains Data FIK UPN "Veteran" Jakarta.
+= aplikasi web based Laravel untuk memberikan tempat untuk pembentukan tim PKM, pengajuan judul, dosen pembimbing beserta jadwal hingga history revision.
+
+## Kebutuhan Sistem
+- PHP 8.2 atau lebih baru
+- Composer
+- MySQL (XAMPP / Laragon)
+
+## Cara Menjalankan dari Nol
+1. git clone https://github.com/ivanfransiscuss/Project-PemrogramanWeb.git
+2. cd Project-PemrogramanWeb
+3. composer install
+4. copy .env.example .env (macos: cp .env.example .env)
+5. buat basis data kosong baru bernama project_web di phpMyAdmin
+6. Sesuaikan database pada file '.env'
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=project_web
+DB_USERNAME=root
+DB_PASSWORD=
+7. php artisan key:generate
+8. php artisan migrate --seed
+9. `php artisan serve` lalu buka http://127.0.0.1:8000
+
+## Pembagian Tugas Kelompok
+
+| Nama | NIM | Bagian yang Dikerjakan |
+| :--- | :--- | :--- |
+| Ivan Fransiscus | 2510514014 | Inisialisasi kerangka proyek, tata letak utama, pengelolaan repositori dan pull Request, serta modul Direktori Dosen dan Pengajuan Dospem |
+| Arkan | 2510514017 | Modul login, Pengisian Biodata Awal, Edit Profil Pengguna, dan FAQ |
+| Tina | 2510514015 | Modul PKM Match (Pencarian dan Pembentukan Kelompok) serta To-Do List PKM |
+| Nindira | 2510514006 | Modul Manajemen Jadwal Kosong Dosen dan Pemesanan (*Booking*) Bimbingan |
+| Bram | 2510514008 | Modul Dashboard Utama, Repositori Proposal, dan Catatan Bimbingan (*Logbook*) |
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
