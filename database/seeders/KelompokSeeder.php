@@ -73,15 +73,4 @@ class KelompokSeeder extends Seeder
         }
     }
 
-    private function buatMahasiswa(int $n): User
-    {
-        return User::firstOrCreate(
-            ['email' => "mhs{$n}@mahasiswa.upnvj.ac.id"],
-            [
-                'name' => "Mahasiswa {$n}",
-                'password' => 'password123',
-                'role' => 'mahasiswa',
-            ]
-        );
-    }
 }

@@ -10,7 +10,6 @@ class DatabaseSeeder extends Seeder
     {
        $this->call([
             UserProfilSeeder::class,
-            // KelompokSeeder::class,
         ]);
     }
 }
