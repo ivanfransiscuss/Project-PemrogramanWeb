@@ -30,4 +30,25 @@ class ProfilDosen extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+        public function kelompokDipimpin(): HasMany
+    {
+        return $this->hasMany(Kelompok::class, 'ketua_id', 'id');
+    }
+
+    public function kelompokDibimbing(): HasMany
+    {
+        return $this->hasMany(Kelompok::class, 'dosen_pembimbing_id', 'id');
+    }
+
+    public function keanggotaan(): HasMany
+    {
+        return $this->hasMany(AnggotaKelompok::class, 'user_id', 'id');
+    }
+
+    public function kelompok(): BelongsToMany
+    {
+        return $this->belongsToMany(Kelompok::class, 'anggota_kelompok', 'user_id', 'kelompok_id')
+            ->withPivot('peran_anggota', 'status_bergabung')
+            ->withTimestamps();
+    }
 }
