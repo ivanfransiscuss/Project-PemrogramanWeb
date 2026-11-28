@@ -59,4 +59,41 @@ class User extends Authenticatable
     {
         return $this->hasMany(JadwalDosen::class, 'dosen_id', 'id');
     }
+
+    public function kelompokDipimpin(): HasMany
+    {
+        return $this->hasMany(Kelompok::class, 'ketua_id', 'id');
+    }
+
+    public function kelompokDibimbing(): HasMany
+    {
+        return $this->hasMany(Kelompok::class, 'dosen_pembimbing_id', 'id');
+    }
+
+    public function keanggotaan(): HasMany
+    {
+        return $this->hasMany(AnggotaKelompok::class, 'user_id', 'id');
+    }
+
+    public function kelompok(): BelongsToMany
+    {
+        return $this->belongsToMany(Kelompok::class, 'anggota_kelompok', 'user_id', 'kelompok_id')
+            ->withPivot('peran_anggota', 'status_bergabung')
+            ->withTimestamps();
+    }
+
+    public function pengajuanDospem(): HasMany
+    {
+        return $this->hasMany(PengajuanDospem::class, 'dosen_id', 'id');
+    }
+
+    public function repositoriPkm(): HasMany
+    {
+        return $this->hasMany(RepositoriPkm::class, 'uploaded_by', 'id');
+    }
+
+    public function logbooks(): HasMany
+    {
+        return $this->hasMany(Logbook::class, 'dosen_id', 'id');
+    }
 }
