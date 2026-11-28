@@ -14,6 +14,7 @@ class Todo extends Model
     protected $fillable = [
         'kelompok_id',
         'judul_tugas',
+        'kategori',
         'is_selesai',
         'tenggat_waktu',
     ];
