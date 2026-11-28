@@ -12,16 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('booking_bimbingan', function (Blueprint $table) {
-            // Primary key custom
             $table->id('id_bimbingan');
-            // Relasi ke jadwal_dosen (pakai id_jadwal)
             $table->foreignId('jadwal_id')->constrained('jadwal_dosen', 'id_jadwal')->onDelete('cascade');
-            // Relasi ke kelompok
-            $table->foreignId('kelompok_id')->constrained('kelompoks')->onDelete('cascade');
+            $table->foreignId('kelompok_id')->constrained('kelompok')->onDelete('cascade');
             $table->text('topik_bimbingan');
             $table->enum('status_booking', ['menunggu', 'disetujui', 'ditolak', 'batal'])->default('menunggu');
             $table->timestamps();
-        }); 
+        });
     }
 
     /**
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('booking_bimbingans');
+        Schema::dropIfExists('booking_bimbingan');
     }
 };
