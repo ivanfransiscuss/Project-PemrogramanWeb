@@ -98,5 +98,40 @@ class KelompokController extends Controller
             'maks' => self::MAKS_ANGGOTA,
         ]);
     }
+
+    // Mahasiswa mengajukan diri bergabung
+    public function gabung(Kelompok $kelompok)
+    {
+        $this->pastikanMahasiswa();
+
+        if ($this->kelompokSaya()) {
+            return back()->with('error', 'Kamu sudah tergabung di sebuah kelompok.');
+        }
+
+        if ($kelompok->status_rekrutmen !== 'terbuka') {
+            return back()->with('error', 'Kelompok ini tidak sedang membuka rekrutmen.');
+        }
+
+        $jumlah = $kelompok->anggota()->where('status_bergabung', 'diterima')->count();
+        if ($jumlah >= self::MAKS_ANGGOTA) {
+            return back()->with('error', 'Kelompok sudah penuh.');
+        }
+
+        $sudahMengajukan = AnggotaKelompok::where('kelompok_id', $kelompok->id)
+            ->where('user_id', Auth::id())
+            ->where('status_bergabung', 'pending')
+            ->exists();
+
+        if ($sudahMengajukan) {
+            return back()->with('error', 'Permintaan kamu masih menunggu persetujuan ketua.');
+        }
+
+        AnggotaKelompok::updateOrCreate(
+            ['kelompok_id' => $kelompok->id, 'user_id' => Auth::id()],
+            ['peran_anggota' => 'anggota', 'status_bergabung' => 'pending']
+        );
+
+        return back()->with('sukses', 'Permintaan bergabung terkirim. Tunggu persetujuan ketua.');
+    }
 }
 
