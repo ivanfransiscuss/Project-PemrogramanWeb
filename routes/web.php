@@ -21,3 +21,6 @@ Route::put('/booking/{id_bimbingan}/status', [BookingBimbinganController::class,
 Route::get('/jadwal', [JadwalDosenController::class, 'index'])->name('jadwal.index');
 Route::get('/jadwal/create', [JadwalDosenController::class, 'create'])->name('jadwal.create');
 Route::post('/jadwal', [JadwalDosenController::class, 'store'])->name('jadwal.store');
+Route::get('/jadwal/{id_jadwal}/edit', [JadwalDosenController::class, 'edit'])->name('jadwal.edit');
+Route::put('/jadwal/{id_jadwal}', [JadwalDosenController::class, 'update'])->name('jadwal.update');
+Route::delete('/jadwal/{id_jadwal}', [JadwalDosenController::class, 'destroy'])->name('jadwal.destroy');
