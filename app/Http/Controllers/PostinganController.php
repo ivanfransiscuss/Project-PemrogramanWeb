@@ -74,5 +74,52 @@ class PostinganController extends Controller
 
         return ['lainnya'];
     }
+
+    public function show(Postingan $postingan)
+    {
+        $postingan->load(['user', 'kelompok', 'balasan.user']);
+
+        return view('match.show', [
+            'p' => $postingan,
+            'daftarTipe' => PkmData::TIPE_POSTINGAN,
+        ]);
+    }
+
+    public function balas(Request $request, Postingan $postingan)
+    {
+        if ($postingan->status === 'selesai') {
+            return back()->with('error', 'Postingan ini sudah ditandai selesai.');
+        }
+
+        $data = $request->validate([
+            'isi' => 'required|string|max:500',
+        ]);
+
+        BalasanPostingan::create([
+            'postingan_id' => $postingan->id,
+            'user_id' => Auth::id(),
+            'isi' => $data['isi'],
+        ]);
+
+        return redirect()->route('match.show', $postingan)->with('sukses', 'Balasan terkirim.');
+    }
+
+    public function selesai(Postingan $postingan)
+    {
+        abort_unless($postingan->user_id === Auth::id(), 403);
+
+        $postingan->update(['status' => 'selesai']);
+
+        return back()->with('sukses', 'Postingan ditandai selesai.');
+    }
+
+    public function destroy(Postingan $postingan)
+    {
+        abort_unless($postingan->user_id === Auth::id(), 403);
+
+        $postingan->delete();
+
+        return redirect()->route('match.index')->with('sukses', 'Postingan dihapus.');
+    }
 }
 
