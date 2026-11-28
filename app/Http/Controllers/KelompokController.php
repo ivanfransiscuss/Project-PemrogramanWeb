@@ -133,5 +133,64 @@ class KelompokController extends Controller
 
         return back()->with('sukses', 'Permintaan bergabung terkirim. Tunggu persetujuan ketua.');
     }
+
+    // Ketua menerima atau menolak permintaan gabung
+    public function updateStatus(Request $request, Kelompok $kelompok, AnggotaKelompok $anggota)
+    {
+        abort_unless($kelompok->ketua_id === Auth::id(), 403);
+        abort_unless($anggota->kelompok_id === $kelompok->id, 404);
+
+        $data = $request->validate([
+            'status_bergabung' => ['required', Rule::in(['diterima', 'ditolak'])],
+        ]);
+
+        if ($data['status_bergabung'] === 'diterima') {
+            $sudahDiKelompokLain = AnggotaKelompok::where('user_id', $anggota->user_id)
+                ->where('status_bergabung', 'diterima')
+                ->where('kelompok_id', '!=', $kelompok->id)
+                ->exists();
+
+            if ($sudahDiKelompokLain) {
+                return back()->with('error', 'Mahasiswa ini sudah bergabung di kelompok lain.');
+            }
+
+            $jumlah = $kelompok->anggota()->where('status_bergabung', 'diterima')->count();
+            if ($jumlah >= self::MAKS_ANGGOTA) {
+                return back()->with('error', 'Kelompok sudah penuh.');
+            }
+        }
+
+        $anggota->update(['status_bergabung' => $data['status_bergabung']]);
+
+        // Kalau sudah penuh: tutup rekrutmen dan selesaikan postingan "kekurangan anggota"
+        $jumlahBaru = $kelompok->anggota()->where('status_bergabung', 'diterima')->count();
+        if ($jumlahBaru >= self::MAKS_ANGGOTA) {
+            $kelompok->update(['status_rekrutmen' => 'penuh']);
+            Postingan::where('kelompok_id', $kelompok->id)
+                ->where('status', 'aktif')
+                ->update(['status' => 'selesai']);
+        }
+
+        return back()->with('sukses', 'Status anggota diperbarui.');
+    }
+
+    // Ketua mengatur peran anggota
+    public function updatePeran(Request $request, Kelompok $kelompok, AnggotaKelompok $anggota)
+    {
+        abort_unless($kelompok->ketua_id === Auth::id(), 403);
+        abort_unless($anggota->kelompok_id === $kelompok->id, 404);
+
+        if ($anggota->user_id === $kelompok->ketua_id) {
+            return back()->with('error', 'Peran ketua tidak bisa diubah.');
+        }
+
+        $data = $request->validate([
+            'peran_anggota' => 'required|string|max:50',
+        ]);
+
+        $anggota->update($data);
+
+        return back()->with('sukses', 'Peran anggota diperbarui.');
+    }
 }
 
