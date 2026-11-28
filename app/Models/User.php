@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(ProfilDosen::class, 'user_id', 'id');
     }
+
+    public function jadwalDosen(): HasMany
+    {
+        return $this->hasMany(JadwalDosen::class, 'dosen_id', 'id');
+    }
 }

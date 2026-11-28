@@ -56,4 +56,9 @@ class Kelompok extends Model
     {
         return $this->hasMany(Todo::class, 'kelompok_id', 'id');
     }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(BookingBimbingan::class, 'kelompok_id', 'id');
+    }
 }
